@@ -18,6 +18,7 @@ const modalAuth = document.querySelector('.modal-auth');
 const closeAuth = document.querySelector('.close-auth');
 const logInForm = document.querySelector('#logInForm');
 const loginInput = document.querySelector('#login');
+const passwordInput = document.querySelector('#password');
 const userName = document.querySelector('.user-name');
 const buttonOut = document.querySelector('.button-out');
 
@@ -64,7 +65,13 @@ function notAuthorized() {
   console.log('Not Authorized');
 
   function noLoginName() {
-    alert('Имя пользователя не может быть пустым');
+    loginInput.style.borderColor = 'tomato';
+    // alert('Имя пользователя не может быть пустым');
+    logInForm.reset();
+  }
+
+  function noPassword() {
+    passwordInput.style.borderColor = 'tomato';
   }
 
   function doLogin() {
@@ -84,9 +91,17 @@ function notAuthorized() {
     // console.log('Logged in');
     // console.log('loginInput.value: ', loginInput.value);
 
-    login = loginInput.value;
+    loginInput.style.borderColor = '';
+    passwordInput.style.borderColor = '';
+
+    login = loginInput.value.trim();
     if (login) {
-      doLogin()
+      if (passwordInput.value.trim()) {
+        doLogin();
+      }
+      else {
+        noPassword();
+      }
     } else {
       noLoginName();
     }
