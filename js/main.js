@@ -28,6 +28,14 @@ let login = localStorage.getItem('user');
 // console.dir(modalAuth);
 
 
+const valid = function(str) {
+  const nameRegEx = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/;
+
+  console.log('this: ', this);
+
+  return nameRegEx.test(str);
+}
+
 function toggleModal() {
   modal.classList.toggle("is-open");
 }
@@ -53,6 +61,7 @@ function authorized() {
     userName.style.display = '';
     buttonOut.style.display = '';
     buttonOut.removeEventListener('click', logOut);
+    returnToMain();
     checkAuth();
   }
 
@@ -69,6 +78,7 @@ function notAuthorized() {
 
   function noLoginName() {
     loginInput.style.borderColor = 'tomato';
+    // loginInput.style.outline = 'transparent';
     // alert('Имя пользователя не может быть пустым');
     logInForm.reset();
   }
@@ -98,7 +108,7 @@ function notAuthorized() {
     passwordInput.style.borderColor = '';
 
     login = loginInput.value.trim();
-    if (login) {
+    if (valid(login)) {
       if (passwordInput.value.trim()) {
         doLogin();
       }
@@ -113,6 +123,12 @@ function notAuthorized() {
   buttonAuth.addEventListener('click', toogleModalAuth);
   closeAuth.addEventListener('click', toogleModalAuth);
   logInForm.addEventListener('submit', logIn);
+}
+
+function returnToMain() {
+  containerPromo.classList.remove('hide');
+  restaurants.classList.remove('hide');
+  menu.classList.add('hide');    
 }
 
 function checkAuth() {
@@ -196,8 +212,6 @@ function openGoods(event) {
   } else {
     toogleModalAuth();
   }
-
-
 }
 
 
@@ -207,11 +221,13 @@ close.addEventListener("click", toggleModal);
 
 cardsRestorants.addEventListener('click', openGoods);
 
-logo.addEventListener('click', function() {
-  containerPromo.classList.remove('hide');
-  restaurants.classList.remove('hide');
-  menu.classList.add('hide');    
-});
+logo.addEventListener('click', returnToMain);
+
+// logo.addEventListener('click', function() {
+//   containerPromo.classList.remove('hide');
+//   restaurants.classList.remove('hide');
+//   menu.classList.add('hide');    
+// });
 
 
 checkAuth();
@@ -220,3 +236,11 @@ createCardRestaurant()
 createCardRestaurant()
 createCardRestaurant()
 
+// window.myVar = 123;
+
+new Swiper('.swiper-container', {
+  loop: true,
+  autoplay: {
+    delay: 2000,
+  },
+});
