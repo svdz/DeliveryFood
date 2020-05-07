@@ -23,6 +23,8 @@ const restaurants = document.querySelector('.restaurants');
 const menu = document.querySelector('.menu');
 const cardsMenu = document.querySelector('.cards-menu');
 
+const menuHeader = document.querySelector('.menu-header');
+
 const logo = document.querySelector('.logo');
 
 let login = localStorage.getItem('user');
@@ -190,6 +192,21 @@ function createCardRestaurant(restaurant) {
   cardsRestorants.insertAdjacentHTML('beforeend', card);
 }
 
+function createMenuHeader(name, price, stars, kitchen) {
+  const header = `
+      <h2 class="section-title restaurant-title">${name}</h2>
+      <div class="card-info">
+          <div class="rating">
+            ${stars}
+          </div>
+          <!-- <div class="price">От ${price} ₽</div> -->
+          <div class="price">${price}</div>
+          <div class="category">${kitchen}</div>
+      </div>
+  `;
+  menuHeader.insertAdjacentHTML('afterbegin', header);
+}
+
 function createCardGood({ description, image, name, price }) {
 
   const card = document.createElement('div');
@@ -227,10 +244,18 @@ function openGoods(event) {
     // console.log('restaurant: ', restaurant);
 
     if (restaurant) {
+      menuHeader.textContent = '';
       cardsMenu.textContent = '';
       containerPromo.classList.add('hide');
       restaurants.classList.add('hide');
       menu.classList.remove('hide');
+
+      const title = restaurant.querySelector('.card-title').textContent;
+      const price = restaurant.querySelector('.price').textContent;
+      const stars = restaurant.querySelector('.rating').textContent;
+      const kitchen = restaurant.querySelector('.category').textContent;
+
+      createMenuHeader(title, price, stars, kitchen);
 
       let productsData = restaurant.dataset.productsMy
       getData(`${REQUEST_PATH}${productsData}`).then(function(data) {
