@@ -11,7 +11,7 @@ const close = document.querySelector(".close");
 const buttonAuth = document.querySelector('.button-auth');
 const modalAuth = document.querySelector('.modal-auth');
 const closeAuth = document.querySelector('.close-auth');
-const logInForm = document.querySelector('#logInForm');
+const logInForm = document.getElementById('logInForm');
 const loginInput = document.querySelector('#login');
 const passwordInput = document.querySelector('#password');
 const userName = document.querySelector('.user-name');
@@ -212,7 +212,7 @@ function createCardGood({ description, image, name, price }) {
   const card = document.createElement('div');
   card.className = 'card';
   card.insertAdjacentHTML('beforeend', `
-        <img src="${image}" alt="image" class="card-image"/>
+        <img src="${image}" alt="${name}" class="card-image"/>
         <div class="card-text">
           <div class="card-heading">
             <h3 class="card-title card-title-reg">${name}</h3>
