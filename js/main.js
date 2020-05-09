@@ -33,6 +33,8 @@ const modalBody = document.querySelector('.modal-body');
 const modalPrice = document.querySelector('.modal-pricetag');
 const buttonClearCart = document.querySelector('.clear-cart');
 
+const inputSearch = document.querySelector('.input-search');
+
 const logo = document.querySelector('.logo');
 
 
@@ -481,6 +483,63 @@ function init() {
   cardsRestorants.addEventListener('click', openGoods);
   
   logo.addEventListener('click', returnToMain);
+
+  inputSearch.addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+
+      const target = event.target;
+      const value = target.value.trim().toLowerCase();
+      target.value = '';
+
+      if (!value) {
+        target.style.backgroundColor = 'tomato';
+        setTimeout(function() {
+          target.style.backgroundColor = '';
+        }, 1200);
+        return;
+      }
+
+      cardsMenu.textContent = '';
+      containerPromo.classList.add('hide');
+      restaurants.classList.add('hide');
+      menu.classList.remove('hide');
+      restaurantTitle.textContent = `Результат поиска`;
+      minPrice.textContent = '';
+      rating.textContent = '';
+      category.textContent = '';
+
+      // This is not needed
+      // const goods = [];
+
+      getData(`${REQUEST_PATH}${PARTNERS_DATA}`)
+          .then(function(data) {
+            // console.log('data: ', data);
+            data.forEach(async function(partnerGoods) {
+              await getData(`${REQUEST_PATH}${partnerGoods.products}`)
+                  .then(function(product) {
+
+                    const filtered = product.filter(function(item) {
+                      return item.name.toLowerCase().includes(value);
+                    });
+
+                    // This is not needed
+                    // goods.push(...filtered);  
+                    // console.log(product);
+
+                    // May be left as is
+                    // filtered.forEach(createCardGood);
+
+                    // and this just for practice
+                    return filtered;
+                  })
+                  // This stuff just for practice chained calls
+                  .then(function(filteredFromAbove) {
+                    filteredFromAbove.forEach(createCardGood);
+                  });
+            });
+          });      
+    }
+  });
   
   // logo.addEventListener('click', function() {
   //   containerPromo.classList.remove('hide');
