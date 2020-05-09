@@ -37,20 +37,24 @@ const inputSearch = document.querySelector('.input-search');
 
 const logo = document.querySelector('.logo');
 
-
 let login = localStorage.getItem('user');
 
 const cart = [];
 const loadCart = function() {
-  if (localStorage.getItem(login)) {
-    JSON.parse(localStorage.getItem(login).forEach(function() {
+  const tmpCart = localStorage.getItem(login);
+  console.log(tmpCart)
+  if (tmpCart) {
+    JSON.parse(tmpCart).forEach(function(item) {
       cart.push(item);
-    }));
+    });
   }
 }
 const saveCart = function() {
   localStorage.setItem(login, JSON.stringify(cart));
 }
+
+
+// const cart = JSON.parse(localStorage.getItem(login)) || [];
 
 // console.log('buttonAuth: ', buttonAuth);
 // modalAuth.classList.add('hello');
@@ -96,6 +100,8 @@ function authorized() {
 
   function logOut() {
     login = null;
+    cart.length = 0;
+
     localStorage.removeItem('user');
     buttonAuth.style.display = '';
     userName.style.display = '';
@@ -113,7 +119,7 @@ function authorized() {
   userName.style.display = 'inline';
   cartButton.style.display = 'flex';
   buttonOut.style.display = 'flex';
-  // loadCart();
+  loadCart();
 }
 
 function notAuthorized() {
@@ -388,7 +394,7 @@ function addToCart(event) {
         cost,
         count: 1
       });
-      // saveCart();
+      saveCart();
     }
 
 
@@ -439,7 +445,7 @@ function changeCount(event) {
     if (target.classList.contains('counter-plus')) food.count++;
     renderCart();
   }
-  // saveCart();
+  saveCart();
 
   // if (target.classList.contains('counter-minus')) {
   //   const food = cart.find(function(item) {
