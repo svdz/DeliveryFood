@@ -40,19 +40,23 @@ const logo = document.querySelector('.logo');
 let login = localStorage.getItem('user');
 
 const cart = [];
-const loadCart = function() {
+const loadCart = () => {
   const tmpCart = localStorage.getItem(login);
   console.log(tmpCart)
   if (tmpCart) {
-    JSON.parse(tmpCart).forEach(function(item) {
-      cart.push(item);
-    });
+    // JSON.parse(tmpCart).forEach(function(item) {
+    //   cart.push(item);
+    // });
+
+    cart.push(...JSON.parse(tmpCart));
+  } else {
+    cart.length = 0;
   }
 }
-const saveCart = function() {
-  localStorage.setItem(login, JSON.stringify(cart));
+// const saveCart = function() {
+const saveCart = () => {
+    localStorage.setItem(login, JSON.stringify(cart));
 }
-
 
 // const cart = JSON.parse(localStorage.getItem(login)) || [];
 
@@ -60,8 +64,9 @@ const saveCart = function() {
 // modalAuth.classList.add('hello');
 // console.dir(modalAuth);
 
-const getData = async function(url) {
-  const response = await fetch(url);
+// const getData = async function(url) {
+const getData = async (url) => {
+    const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(`Ошибка запроса по ${url}, статус - ${response.status}!`);
@@ -147,8 +152,9 @@ function notAuthorized() {
     checkAuth();
   }
 
-  function logIn(event) {
-    // console.log('event: ', event);
+  // function logIn(event) {
+  const logIn = event => {
+      // console.log('event: ', event);
     event.preventDefault();
     // console.log('Logged in');
     // console.log('loginInput.value: ', loginInput.value);
@@ -180,6 +186,7 @@ function returnToMain() {
   menu.classList.add('hide');    
 }
 
+/*
 function checkAuth() {
 // if ('true') {
   if (login) {
@@ -187,8 +194,12 @@ function checkAuth() {
   } else {
     notAuthorized();
   }
-
 }
+*/
+
+const checkAuth = login ? authorized : notAuthorized;
+  
+
 
 /*
 function createCardRestaurant(restaurant) {
@@ -350,9 +361,11 @@ function openGoods(event) {
       */
 
       let productsData = restaurant.dataset.productsMy
-      getData(`${REQUEST_PATH}${productsData}`).then(function(data) {
-        data.forEach(createCardGood);
-      });
+      getData(`${REQUEST_PATH}${productsData}`)
+        .then(data => data.forEach(createCardGood));
+      // getData(`${REQUEST_PATH}${productsData}`).then(function(data) {
+      //   data.forEach(createCardGood);
+      // });
 
       // createCardGood();
     }
@@ -372,9 +385,10 @@ function addToCart(event) {
     const id = buttonAddToCart.id;
     // console.log(title, cost, id);
 
-    const food = cart.find(function(item) {
-      return item.id == id;
-    });
+    const food = cart.find(item => item.id == id);
+    // const food = cart.find(function(item) {
+    //   return item.id == id;
+    // });
 
     if (food) {
       food.count += 1;
@@ -470,10 +484,12 @@ function init() {
     data.forEach(createCardRestaurant);
   });
   
-  cartButton.addEventListener("click", function() {
-    renderCart();
-    toggleModal();
-  });
+  cartButton.addEventListener("click", renderCart);
+  cartButton.addEventListener("click", toggleModal);
+  // cartButton.addEventListener("click", function() {
+  //   renderCart();
+  //   toggleModal();
+  // });
   
   modalBody.addEventListener('click', changeCount);
 
