@@ -239,7 +239,7 @@ function createCardRestaurant({ image : image, kitchen, // : kitchen, .....
           <div class="rating">
             ${stars}
           </div>
-          <div class="price">От ${price} ₽</div>
+          <div class="price">От $${price/100.0}</div>
           <div class="category">${kitchen}</div>
         </div>
       </div>
@@ -313,7 +313,7 @@ function createCardGood({ description, image, name, price, id }) {
               <span class="button-card-text">В корзину</span>
               <span class="button-cart-svg"></span>
             </button>
-            <strong class="card-price-bold card-price">${price} ₽</strong>
+            <strong class="card-price-bold card-price">$${price/100.0}</strong>
           </div>
         </div>
   `);
@@ -346,8 +346,8 @@ function openGoods(event) {
       const [ name, price, stars, kitchen ] = restaurant.info;
 
       restaurantTitle.textContent = name;
-      minPrice.textContent = price;
-      rating.textContent = `От ${price} ₽`;
+      minPrice.textContent = `От $${price/100.0}`;
+      rating.textContent = stars;
       category.textContent = kitchen;
 
 
@@ -439,7 +439,7 @@ function renderCart() {
     return result + (parseFloat(item.cost) * item.count);
   }, 0);
 
-  modalPrice.textContent = totalPrice + ' ₽';
+  modalPrice.textContent = `$${totalPrice/100.0}`;
 }
 
 
